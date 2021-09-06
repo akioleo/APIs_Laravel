@@ -17,14 +17,16 @@ class ProductController extends Controller
 
     public function index()
     {
-        $products = $this->product->all();
-        return response()->json($products);
+        $products = $this->product->paginate(1);
+        //return response()->json($products);
+        return new ProductCollection($products);
     }
 
     public function show($id)
     {
         $product = $this->product->find($id);
-        return response()->json($product);
+        //return response()->json($product);
+        return new ProductResource($product);
     }
 
 

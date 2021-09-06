@@ -18,12 +18,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 //PRODUCT ROUTE
+
 //Route::get('/products', 'Api\\ProductController@index');
-Route::namespace('Api')->prefix('products')->group(function(){
-    Route::get('/', 'ProductController@index');
-    Route::get('/{id}', 'ProductController@show');
-    Route::post('/', 'ProductController@save');
-    Route::put('/', 'ProductController@update');
-    Route::patch('/', 'ProductController@update');
-    Route::delete('/{id}', 'ProductController@delete');
+Route::namespace('Api')->group(function(){
+    Route::prefix('products')->group(function(){
+        Route::get('/', 'ProductController@index');
+        Route::get('/{id}', 'ProductController@show');
+        Route::post('/', 'ProductController@save');
+        Route::put('/', 'ProductController@update');
+        Route::patch('/', 'ProductController@update');
+        Route::delete('/{id}', 'ProductController@delete');
+    });
+
+    Route::resource('/users', 'UserController');
+
 });
