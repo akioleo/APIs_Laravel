@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\ProductRequest;
 use App\Product;
 use App\Repository\ProductRepository;
 use Illuminate\Http\Request;
@@ -43,14 +44,14 @@ class ProductController extends Controller
 
 
     //Como vai receber um dado, injetar request
-    public function save(Request $request)
+    public function save(ProductRequest $request)
     {
         $data = $request->all();
         $product = $this->product->create($data);
         return response()->json($product);
     }
 
-    public function update(Request $request)
+    public function update(ProductRequest $request)
     {
         //Armazenar em $data os dados do request
         $data = $request -> all();
