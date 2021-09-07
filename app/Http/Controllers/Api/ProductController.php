@@ -3,23 +3,35 @@
 namespace App\Http\Controllers\Api;
 
 use App\Product;
+use App\Repository\ProductRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class ProductController extends Controller
 {
     private $product;
-    //Model Product - Data private $products 
+    //Model Product - Data private $products
     public function __construct(Product $product)
     {
         $this->product = $product;
     }
-
-    public function index()
+    //Injetar request pois irá receber dados da url
+    public function index(Request $request)
     {
-        $products = $this->product->paginate(1);
-        //return response()->json($products);
-        return new ProductCollection($products);
+        $products = $this->product;
+        //Passando uma instância do model para o repository
+        $productRepository = new ProductRepository($products);
+
+        if($request->has('conditions')) {
+            $productRepository->selectCondition($request->get('conditions'));
+        }
+
+        if($request->has('fields')) {
+            $productRepository->selectFilter($request->get('fields'));
+        }
+
+        return response()->json($productRepository->getResult()->paginate(10));
+        //return new ProductCollection($products);
     }
 
     public function show($id)
